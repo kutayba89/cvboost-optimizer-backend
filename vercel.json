@@ -1,10 +1,7 @@
 {
-  "rewrites": [
-    { "source": "/api/auth/register",     "destination": "/api/auth/register.js" },
-    { "source": "/api/auth/login",        "destination": "/api/auth/login.js" },
-    { "source": "/api/auth/verify-email", "destination": "/api/auth/verify-email.js" },
-    { "source": "/api/me",                "destination": "/api/me.js" },
-    { "source": "/api/optimize",          "destination": "/api/optimize.js" },
-    { "source": "/api/verify",            "destination": "/api/verify.js" }
-  ]
+  "functions": {
+    "api/**/*.js": {
+      "maxDuration": 30
+    }
+  }
 }
