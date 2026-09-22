@@ -4,7 +4,7 @@
 
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import pool from "../../db/client.js";
+import { pool } from "../../db/client.js";
 
 const JWT_EXPIRES_IN = "7d";
 

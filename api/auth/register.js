@@ -4,7 +4,7 @@
 import bcrypt from "bcryptjs";
 import crypto from "node:crypto";
 import nodemailer from "nodemailer";
-import pool from "../../db/client.js";
+import { pool } from "../../db/client.js";
 
 const BCRYPT_ROUNDS = 12;
 const TOKEN_TTL_HOURS = 24;

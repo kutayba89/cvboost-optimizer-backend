@@ -2,7 +2,7 @@
 // GET /api/me
 // Returns the logged-in user's trial/paid status from the database.
 
-import pool from "../db/client.js";
+import { pool } from "../../db/client.js";
 import { requireAuth } from "../middleware/auth.js";
 
 const FREE_TRIES = 3;

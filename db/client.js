@@ -1,30 +1,24 @@
-// middleware/auth.js
-import jwt from "jsonwebtoken";
+// db/client.js
+import pg from "pg";
 
-if (!process.env.JWT_SECRET) {
-  throw new Error("JWT_SECRET environment variable is not set.");
+const { Pool } = pg;
+
+if (!process.env.DATABASE_URL) {
+  throw new Error("DATABASE_URL environment variable is not set.");
 }
 
-/**
- * Extracts and verifies the Bearer token from the request headers.
- * @param {object} req
- * @returns {{ id: string, email: string }}
- */
-export function requireAuth(req) {
-  const authHeader = req.headers?.authorization || "";
-  const token = authHeader.startsWith("Bearer ") ? authHeader.slice(7) : "";
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  max: 5,
+  idleTimeoutMillis: 30_000,
+  connectionTimeoutMillis: 5_000,
+  ssl: false,
+});
 
-  if (!token) {
-    throw { status: 401, code: "NOT_LOGGED_IN", error: "Please log in to use the tool." };
-  }
+pool.on("error", (err) => {
+  console.error("PostgreSQL pool error:", err.message);
+});
 
-  try {
-    const payload = jwt.verify(token, process.env.JWT_SECRET);
-    return payload; // { id, email, iat, exp }
-  } catch (err) {
-    if (err.name === "TokenExpiredError") {
-      throw { status: 401, code: "NOT_LOGGED_IN", error: "Session expired. Please log in again." };
-    }
-    throw { status: 401, code: "NOT_LOGGED_IN", error: "Invalid session. Please log in again." };
-  }
-}
+// Named export for compatibility
+export { pool };
+export default pool;

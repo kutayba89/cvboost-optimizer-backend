@@ -2,7 +2,7 @@
 // GET /api/auth/verify-email?token=<token>
 // Activates the user's account when they click the link in their email.
 
-import pool from "../../db/client.js";
+import { pool } from "../../db/client.js";
 
 const APP_URL = process.env.APP_URL || "https://cvboost-optimizer-backend.vercel.app";
 
