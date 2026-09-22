@@ -3,7 +3,7 @@
 // Requires a valid JWT in the Authorization header.
 
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { pool } from "../../db/client.js";
+import { pool } from "../db/client.js";
 import { requireAuth } from "../middleware/auth.js";
 
 const genAI     = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
