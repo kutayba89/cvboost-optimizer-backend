@@ -27,7 +27,7 @@ async function sendVerificationEmail(email, token) {
 
   const transporter = createTransporter();
   await transporter.sendMail({
-    from: `"CVBoost" <${process.env.SMTP_USER}>`,
+    from: `"CVBoost" <${process.env.SMTP_FROM || process.env.SMTP_USER}>`,
     to: email,
     subject: "Verify your CVBoost account",
     html: `
