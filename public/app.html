@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CVBoost — Tool</title>
+  <title>CVBoost – Tool</title>
   <meta name="description" content="AI-powered LinkedIn profile, resume, and cover letter optimizer.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -37,8 +37,6 @@
     }
     .container { max-width: var(--max); margin: 0 auto; padding: 0 24px; }
     h1, h2, h3 { color: var(--ink-900); font-weight: 900; letter-spacing: -0.01em; line-height: 1.1; }
-
-    /* Navbar */
     .nav { position: sticky; top: 0; z-index: 50; background: #fff; border-bottom: 2px solid var(--ink-900); }
     .nav-inner { max-width: var(--max); margin: 0 auto; padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; }
     .brand { display: flex; align-items: center; gap: 10px; font-weight: 900; color: var(--ink-900); font-size: 1.2rem; text-transform: uppercase; letter-spacing: -0.02em; text-decoration: none; }
@@ -48,14 +46,10 @@
     .lang-switch { display: inline-flex; border: 2px solid var(--ink-900); border-radius: 999px; overflow: hidden; }
     .lang-btn { font-family: inherit; font-weight: 800; font-size: .8rem; padding: 5px 12px; border: none; background: #fff; color: var(--ink-900); cursor: pointer; transition: all .15s; }
     .lang-btn.active { background: var(--ink-900); color: #fff; }
-
-    /* Layout */
     .wrap { padding: 40px 20px 80px; }
     .head { text-align: center; max-width: 640px; margin: 0 auto 36px; }
     .head h1 { font-size: clamp(1.8rem, 4vw, 2.6rem); text-transform: uppercase; margin-bottom: 10px; }
     .head p { color: var(--ink-500); font-size: 1.05rem; }
-
-    /* Mode tabs */
     .tabs { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 28px; }
     .tab {
       font-family: inherit; font-weight: 700; font-size: .9rem; cursor: pointer;
@@ -64,14 +58,10 @@
     }
     .tab:hover { background: var(--brand-500); }
     .tab.active { background: var(--ink-900); color: #fff; }
-
-    /* Panel grid */
     .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start; }
     @media (max-width: 860px) { .grid { grid-template-columns: 1fr; } }
-
     .card { background: #fff; border: 2px solid var(--ink-900); border-radius: var(--radius); padding: 24px; }
     .card h3 { font-size: 1.05rem; text-transform: uppercase; margin-bottom: 14px; letter-spacing: .02em; }
-
     label { display: block; font-weight: 700; font-size: .85rem; color: var(--ink-900); margin-bottom: 6px; }
     .hint { font-weight: 500; color: var(--ink-500); font-size: .8rem; margin-bottom: 8px; }
     textarea, input[type=text] {
@@ -83,7 +73,6 @@
     textarea { min-height: 200px; }
     .field { margin-bottom: 18px; }
     .counter { text-align: right; font-size: .75rem; color: var(--ink-500); margin-top: 4px; }
-
     .btn {
       display: inline-flex; align-items: center; justify-content: center; gap: 8px;
       font-family: inherit; font-weight: 700; font-size: 1rem; padding: 14px 26px;
@@ -95,8 +84,6 @@
     .btn-primary:disabled { opacity: .55; cursor: not-allowed; }
     .btn-ghost { background: #fff; border: 2px solid var(--ink-900); color: var(--ink-900); font-size: .85rem; padding: 8px 16px; }
     .btn-ghost:hover { background: var(--ink-900); color: #fff; }
-
-    /* Result */
     .result-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; gap: 10px; }
     .result-head h3 { margin-bottom: 0; }
     .result-actions { display: flex; gap: 8px; }
@@ -106,16 +93,11 @@
       border-radius: var(--radius-sm); padding: 16px; overflow-wrap: break-word;
     }
     .placeholder-txt { color: var(--ink-500); font-style: italic; }
-
-    /* Spinner */
     .spinner { display: inline-block; width: 18px; height: 18px; border: 3px solid rgba(0,0,0,.2); border-top-color: #111; border-radius: 50%; animation: spin .7s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
-
     .msg { padding: 12px 14px; border-radius: var(--radius-sm); font-size: .9rem; font-weight: 600; margin-top: 14px; display: none; }
     .msg.error { background: #fee2e2; color: var(--red); border: 2px solid var(--red); display: block; }
     .msg.success { background: #dcfce7; color: var(--green); border: 2px solid var(--green); display: block; }
-
-    /* Trial badge */
     .trial-badge {
       display: inline-flex; align-items: center; gap: 8px; margin: 0 auto 24px;
       background: #fff; border: 2px solid var(--ink-900); border-radius: 999px;
@@ -125,8 +107,6 @@
     .trial-badge.unlocked { background: var(--ink-900); color: #fff; border-color: var(--ink-900); }
     .trial-badge.unlocked .count { background: var(--green); color: #fff; }
     .trial-wrap { text-align: center; }
-
-    /* Paywall overlay */
     .paywall {
       position: fixed; inset: 0; z-index: 100; display: none;
       align-items: center; justify-content: center; padding: 20px;
@@ -154,11 +134,10 @@
   </style>
 </head>
 <body>
-
   <nav class="nav">
     <div class="nav-inner">
       <a href="/index.html" class="brand"><span class="dot">🚀</span> CVBoost</a>
-      <div style="display:flex;align-items:center;gap:16px;">
+      <div style="display:flex;align-items:center;gap:16px;" id="navRight">
         <div class="lang-switch" id="langSwitch">
           <button class="lang-btn" data-lang="en">EN</button>
           <button class="lang-btn" data-lang="de">DE</button>
@@ -167,14 +146,12 @@
       </div>
     </div>
   </nav>
-
   <div class="wrap">
     <div class="container">
       <div class="head">
         <h1 id="headTitle">AI Optimizer Tool</h1>
         <p id="headSub">Pick what you want to improve, paste your text, and let AI do the rest.</p>
       </div>
-
       <div class="trial-wrap">
         <span class="trial-badge" id="trialBadge">
           <span id="trialLabel">Free trial:</span>
@@ -182,17 +159,14 @@
           <span id="trialWord">tries left</span>
         </span>
       </div>
-
       <div class="tabs" id="tabs">
-        <button class="tab active" data-mode="headline">✍️ Headline</button>
+        <button class="tab active" data-mode="headline">✏️ Headline</button>
         <button class="tab" data-mode="summary">📝 About / Summary</button>
         <button class="tab" data-mode="experience">📋 Experience</button>
         <button class="tab" data-mode="resume">📄 Resume</button>
         <button class="tab" data-mode="cover_letter">💼 Cover Letter</button>
       </div>
-
       <div class="grid">
-        <!-- Input -->
         <div class="card">
           <h3 id="inputTitle">Your Headline</h3>
           <div class="field">
@@ -201,17 +175,13 @@
             <textarea id="inputText" maxlength="8000" placeholder="Paste your text here..."></textarea>
             <div class="counter"><span id="charCount">0</span> / 8000</div>
           </div>
-
           <div class="field" id="contextField">
             <label for="contextText"><span id="lblContext">Target role / company</span> <span id="lblOptional" style="font-weight:500;color:var(--ink-500)">(optional)</span></label>
             <input type="text" id="contextText" placeholder="e.g. Senior Product Manager at Spotify">
           </div>
-
           <button class="btn btn-primary" id="optimizeBtn">Optimize <span>→</span></button>
           <div class="msg" id="msg"></div>
         </div>
-
-        <!-- Output -->
         <div class="card">
           <div class="result-head">
             <h3 id="resultTitle">Result</h3>
@@ -235,7 +205,6 @@
       <div class="paywall-price">€19 <small>once</small></div>
       <div class="paywall-note" id="payNote">Lifetime access · no subscription</div>
       <a href="#" class="btn btn-primary" id="buyBtn">Unlock Unlimited Access →</a>
-
       <button class="code-toggle" id="codeToggle">I already have an access code</button>
       <div class="code-box" id="codeBox">
         <label for="codeInput" id="lblEnterCode">Enter your access code</label>
@@ -245,45 +214,43 @@
         </div>
         <div class="msg" id="codeMsg"></div>
       </div>
-
       <button class="paywall-close" id="paywallClose">Maybe later</button>
     </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="/supabase-config.js"></script>
   <script>
-    // If you host the API on the same domain (Vercel), leave this empty.
     const API_BASE = "";
 
-    // ---- Supabase auth: require login, get token for API calls ----
-    const sbClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    let AUTH_TOKEN = null;
+    // ── JWT Auth (no Supabase) ────────────────────────────────────────────────
+    let AUTH_TOKEN   = null;
     let CURRENT_USER = null;
 
-    async function requireLogin() {
-      const { data } = await sbClient.auth.getSession();
-      if (!data.session) {
+    function requireLogin() {
+      const token = localStorage.getItem("cvboost_token");
+      const email = localStorage.getItem("cvboost_email");
+      if (!token) {
         window.location.href = "/login.html";
         return false;
       }
-      AUTH_TOKEN = data.session.access_token;
-      CURRENT_USER = data.session.user;
+      AUTH_TOKEN   = token;
+      CURRENT_USER = { email };
       return true;
     }
 
-    async function doLogout() {
-      await sbClient.auth.signOut();
+    function doLogout() {
+      localStorage.removeItem("cvboost_token");
+      localStorage.removeItem("cvboost_email");
       window.location.href = "/login.html";
     }
 
-    /* ---------- Language (DE / EN) ---------- */
+    // ── Language ──────────────────────────────────────────────────────────────
     const LS_LANG = "lio_lang";
     const I18N = {
       en: {
         headTitle: "AI Optimizer Tool",
         headSub: "Pick what you want to improve, paste your text, and let AI do the rest.",
-        tab_headline: "✍️ Headline", tab_summary: "📝 About / Summary", tab_experience: "📋 Experience", tab_resume: "📄 Resume", tab_cover_letter: "💼 Cover Letter",
+        tab_headline: "✏️ Headline", tab_summary: "📝 About / Summary",
+        tab_experience: "📋 Experience", tab_resume: "📄 Resume", tab_cover_letter: "💼 Cover Letter",
         yourText: "Your text", contextLabel: "Target role / company", optional: "(optional)",
         contextPlaceholder: "e.g. Senior Product Manager at Spotify",
         inputPlaceholder: "Paste your text here...",
@@ -291,20 +258,27 @@
         resultTitle: "Result", copy: "Copy", copied: "Copied!", download: "Download",
         resultPlaceholder: "Your optimized result will appear here...", thinking: "Thinking...",
         back: "← Back to Home",
-        trialLabel: "Free trial:", triesLeft: "tries left", tryLeft: "try left", unlimited: "✓ Unlimited access",
+        trialLabel: "Free trial:", triesLeft: "tries left", tryLeft: "try left",
+        unlimited: "✔ Unlimited access",
         needWords: "Please enter at least a few words.",
         doneMsg: "Done! Review your optimized result below.",
-        payTitle: "Free Trial Used Up", payText: "You've used all your free optimizations. Unlock unlimited access to keep improving your profile, resume, and cover letters.",
+        payTitle: "Free Trial Used Up",
+        payText: "You've used all your free optimizations. Unlock unlimited access to keep improving your profile, resume, and cover letters.",
         payNote: "Lifetime access · no subscription", unlock: "Unlock Unlimited Access →",
-        haveCode: "I already have an access code", enterCode: "Enter your access code", apply: "Apply", later: "Maybe later",
-        checking: "Checking...", codeSuccess: "Success! Unlimited access unlocked.", codeInvalid: "Invalid code. Please check and try again.", codeEmpty: "Please enter your access code.", codeError: "Could not verify code. Please try again.",
+        haveCode: "I already have an access code", enterCode: "Enter your access code",
+        apply: "Apply", later: "Maybe later",
+        checking: "Checking...", codeSuccess: "Success! Unlimited access unlocked.",
+        codeInvalid: "Invalid code. Please check and try again.",
+        codeEmpty: "Please enter your access code.",
+        codeError: "Could not verify code. Please try again.",
         titles: { headline:"Your Headline", summary:"Your About / Summary", experience:"Your Experience", resume:"Your Resume", cover_letter:"Your Background" },
-        hints: { headline:"Paste your current LinkedIn headline.", summary:"Paste your current LinkedIn About section.", experience:"Paste a job title + description or your current bullet points.", resume:"Paste your resume text (or a section of it).", cover_letter:"Paste your background, key skills, and experience." },
+        hints:  { headline:"Paste your current LinkedIn headline.", summary:"Paste your current LinkedIn About section.", experience:"Paste a job title + description or your current bullet points.", resume:"Paste your resume text (or a section of it).", cover_letter:"Paste your background, key skills, and experience." },
       },
       de: {
         headTitle: "KI-Optimierungstool",
         headSub: "Wähle aus, was du verbessern möchtest, füge deinen Text ein und lass die KI den Rest erledigen.",
-        tab_headline: "✍️ Schlagzeile", tab_summary: "📝 Info / Zusammenfassung", tab_experience: "📋 Berufserfahrung", tab_resume: "📄 Lebenslauf", tab_cover_letter: "💼 Anschreiben",
+        tab_headline: "✏️ Schlagzeile", tab_summary: "📝 Info / Zusammenfassung",
+        tab_experience: "📋 Berufserfahrung", tab_resume: "📄 Lebenslauf", tab_cover_letter: "💼 Anschreiben",
         yourText: "Dein Text", contextLabel: "Zielrolle / Unternehmen", optional: "(optional)",
         contextPlaceholder: "z. B. Senior Product Manager bei Spotify",
         inputPlaceholder: "Füge deinen Text hier ein...",
@@ -312,69 +286,66 @@
         resultTitle: "Ergebnis", copy: "Kopieren", copied: "Kopiert!", download: "Herunterladen",
         resultPlaceholder: "Dein optimiertes Ergebnis erscheint hier...", thinking: "Einen Moment...",
         back: "← Zurück zur Startseite",
-        trialLabel: "Kostenlose Testversion:", triesLeft: "Versuche übrig", tryLeft: "Versuch übrig", unlimited: "✓ Unbegrenzter Zugang",
+        trialLabel: "Kostenlose Testversion:", triesLeft: "Versuche übrig", tryLeft: "Versuch übrig",
+        unlimited: "✔ Unbegrenzter Zugang",
         needWords: "Bitte gib mindestens ein paar Wörter ein.",
         doneMsg: "Fertig! Sieh dir unten dein optimiertes Ergebnis an.",
-        payTitle: "Testversion aufgebraucht", payText: "Du hast alle kostenlosen Optimierungen genutzt. Schalte unbegrenzten Zugang frei, um dein Profil, deinen Lebenslauf und deine Anschreiben weiter zu verbessern.",
+        payTitle: "Testversion aufgebraucht",
+        payText: "Du hast alle kostenlosen Optimierungen genutzt. Schalte unbegrenzten Zugang frei.",
         payNote: "Lebenslanger Zugang · kein Abo", unlock: "Unbegrenzten Zugang freischalten →",
-        haveCode: "Ich habe bereits einen Zugangscode", enterCode: "Gib deinen Zugangscode ein", apply: "Anwenden", later: "Vielleicht später",
-        checking: "Prüfe...", codeSuccess: "Erfolg! Unbegrenzter Zugang freigeschaltet.", codeInvalid: "Ungültiger Code. Bitte prüfen und erneut versuchen.", codeEmpty: "Bitte gib deinen Zugangscode ein.", codeError: "Code konnte nicht geprüft werden. Bitte versuche es erneut.",
+        haveCode: "Ich habe bereits einen Zugangscode", enterCode: "Gib deinen Zugangscode ein",
+        apply: "Anwenden", later: "Vielleicht später",
+        checking: "Prüfe...", codeSuccess: "Erfolg! Unbegrenzter Zugang freigeschaltet.",
+        codeInvalid: "Ungültiger Code. Bitte prüfen und erneut versuchen.",
+        codeEmpty: "Bitte gib deinen Zugangscode ein.",
+        codeError: "Code konnte nicht geprüft werden. Bitte versuche es erneut.",
         titles: { headline:"Deine Schlagzeile", summary:"Deine Info / Zusammenfassung", experience:"Deine Berufserfahrung", resume:"Dein Lebenslauf", cover_letter:"Dein Hintergrund" },
-        hints: { headline:"Füge deine aktuelle LinkedIn-Schlagzeile ein.", summary:"Füge deinen aktuellen LinkedIn-Info-Bereich ein.", experience:"Füge einen Jobtitel + Beschreibung oder deine aktuellen Stichpunkte ein.", resume:"Füge deinen Lebenslauf-Text ein (oder einen Abschnitt).", cover_letter:"Füge deinen Hintergrund, deine Kernkompetenzen und Erfahrung ein." },
+        hints:  { headline:"Füge deine aktuelle LinkedIn-Schlagzeile ein.", summary:"Füge deinen aktuellen LinkedIn-Info-Bereich ein.", experience:"Füge einen Jobtitel + Beschreibung oder deine aktuellen Stichpunkte ein.", resume:"Füge deinen Lebenslauf-Text ein (oder einen Abschnitt).", cover_letter:"Füge deinen Hintergrund, deine Kernkompetenzen und Erfahrung ein." },
       },
     };
 
     function detectLang() {
       const saved = localStorage.getItem(LS_LANG);
       if (saved === "en" || saved === "de") return saved;
-      return (navigator.language || "").toLowerCase().startsWith("de") ? "de" : "de";
+      return "de";
     }
     let LANG = detectLang();
-    function t(key) { return (I18N[LANG] && I18N[LANG][key] !== undefined) ? I18N[LANG][key] : I18N.en[key]; }
+    function t(key) { return (I18N[LANG]?.[key] !== undefined) ? I18N[LANG][key] : I18N.en[key]; }
 
-    // Swaps all visible UI text into the current language.
     function applyLanguage() {
       document.documentElement.lang = LANG;
       const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
-      set("headTitle", t("headTitle"));
-      set("headSub", t("headSub"));
+      set("headTitle",   t("headTitle"));
+      set("headSub",     t("headSub"));
       set("lblYourText", t("yourText"));
-      set("lblContext", t("contextLabel"));
+      set("lblContext",  t("contextLabel"));
       set("lblOptional", t("optional"));
       set("resultTitle", t("resultTitle"));
-      set("backLink", t("back"));
-      // Tabs
-      document.querySelectorAll(".tab").forEach((b) => { b.textContent = t("tab_" + b.dataset.mode); });
-      // Placeholders
+      set("backLink",    t("back"));
+      document.querySelectorAll(".tab").forEach(b => { b.textContent = t("tab_" + b.dataset.mode); });
       const it = document.getElementById("inputText"); if (it) it.placeholder = t("inputPlaceholder");
       const ct = document.getElementById("contextText"); if (ct) ct.placeholder = t("contextPlaceholder");
-      // Buttons (only if not mid-loading)
       const ob = document.getElementById("optimizeBtn");
-      if (ob && !ob.disabled) ob.innerHTML = t("optimize") + ' <span>\u2192</span>';
+      if (ob && !ob.disabled) ob.innerHTML = t("optimize") + ' <span>→</span>';
       const cp = document.getElementById("copyBtn"); if (cp) cp.textContent = t("copy");
       const dl = document.getElementById("downloadBtn"); if (dl) dl.textContent = t("download");
-      // Input title/hint for the active mode
       const itl = document.getElementById("inputTitle"); if (itl) itl.textContent = t("titles")[currentMode];
-      const ih = document.getElementById("inputHint"); if (ih) ih.textContent = t("hints")[currentMode];
-      // Output placeholder (only if still showing placeholder)
+      const ih  = document.getElementById("inputHint");  if (ih)  ih.textContent  = t("hints")[currentMode];
       const outEl = document.getElementById("output");
       if (outEl && outEl.querySelector(".placeholder-txt")) {
         outEl.innerHTML = '<span class="placeholder-txt">' + t("resultPlaceholder") + '</span>';
       }
-      // Paywall text
-      set("payTitle", t("payTitle"));
-      set("payText", t("payText"));
-      set("payNote", t("payNote"));
-      set("buyBtn", t("unlock"));
-      set("codeToggle", t("haveCode"));
-      set("lblEnterCode", t("enterCode"));
-      set("codeApply", t("apply"));
-      set("paywallClose", t("later"));
-      // Language buttons active state
-      document.querySelectorAll(".lang-btn").forEach((b) => {
+      set("payTitle",    t("payTitle"));
+      set("payText",     t("payText"));
+      set("payNote",     t("payNote"));
+      set("buyBtn",      t("unlock"));
+      set("codeToggle",  t("haveCode"));
+      set("lblEnterCode",t("enterCode"));
+      set("codeApply",   t("apply"));
+      set("paywallClose",t("later"));
+      document.querySelectorAll(".lang-btn").forEach(b => {
         b.classList.toggle("active", b.dataset.lang === LANG);
       });
-      // Trial badge
       if (typeof updateTrialUI === "function") updateTrialUI();
     }
 
@@ -384,121 +355,105 @@
       applyLanguage();
     }
 
-    /* ---------- Free trial / paywall config ---------- */
-    const FREE_TRIES = 3;                 // number of free optimizations
-    const LS_USED = "lio_uses";           // localStorage key: uses so far
-    const LS_UNLOCKED = "lio_unlocked";   // localStorage key: "1" if paid/unlocked
-
-    const LS_CODE = "lio_code";           // localStorage key: the user's access code
-
-    // Your PayPal payment link — REPLACE with your real PayPal.Me or checkout URL.
-    // Example: "https://www.paypal.com/paypalme/yourname/19"
-    const PAYMENT_URL = "https://www.paypal.com/paypalme/YOURNAME/19EUR";
-
-    // ---- Account state (from the server/database, NOT the browser) ----
-    let ACCOUNT = { usesCount: 0, isPaid: false, loaded: false };
+    // ── Trial / Paywall ───────────────────────────────────────────────────────
+    const FREE_TRIES   = 3;
+    const PAYMENT_URL  = "https://www.paypal.com/paypalme/YOURNAME/19EUR";
+    let ACCOUNT        = { usesCount: 0, isPaid: false, loaded: false };
     function isUnlocked() { return ACCOUNT.isPaid === true; }
-    function triesLeft() { return Math.max(0, FREE_TRIES - (ACCOUNT.usesCount || 0)); }
+    function triesLeft()  { return Math.max(0, FREE_TRIES - (ACCOUNT.usesCount || 0)); }
 
     const MODE_META = {
-      headline:     { title: "Your Headline",        hint: "Paste your current LinkedIn headline.", showContext: true },
-      summary:      { title: "Your About / Summary", hint: "Paste your current LinkedIn About section.", showContext: true },
-      experience:   { title: "Your Experience",      hint: "Paste a job title + description or your current bullet points.", showContext: true },
-      resume:       { title: "Your Resume",          hint: "Paste your resume text (or a section of it).", showContext: true },
-      cover_letter: { title: "Your Background",       hint: "Paste your background, key skills, and experience.", showContext: true },
+      headline:     { showContext: true },
+      summary:      { showContext: true },
+      experience:   { showContext: true },
+      resume:       { showContext: true },
+      cover_letter: { showContext: true },
     };
-
     let currentMode = "headline";
 
-    const tabs = document.getElementById("tabs");
-    const inputText = document.getElementById("inputText");
+    // DOM refs
+    const tabs        = document.getElementById("tabs");
+    const inputText   = document.getElementById("inputText");
     const contextText = document.getElementById("contextText");
-    const contextField = document.getElementById("contextField");
-    const inputTitle = document.getElementById("inputTitle");
-    const inputHint = document.getElementById("inputHint");
+    const contextField= document.getElementById("contextField");
+    const inputTitle  = document.getElementById("inputTitle");
+    const inputHint   = document.getElementById("inputHint");
     const optimizeBtn = document.getElementById("optimizeBtn");
-    const output = document.getElementById("output");
-    const msg = document.getElementById("msg");
-    const charCount = document.getElementById("charCount");
-    const copyBtn = document.getElementById("copyBtn");
+    const output      = document.getElementById("output");
+    const msg         = document.getElementById("msg");
+    const charCount   = document.getElementById("charCount");
+    const copyBtn     = document.getElementById("copyBtn");
     const downloadBtn = document.getElementById("downloadBtn");
+    const trialBadge  = document.getElementById("trialBadge");
+    const trialLabel  = document.getElementById("trialLabel");
+    const trialCount  = document.getElementById("trialCount");
+    const trialWord   = document.getElementById("trialWord");
+    const paywall     = document.getElementById("paywall");
+    const buyBtn      = document.getElementById("buyBtn");
+    const codeToggle  = document.getElementById("codeToggle");
+    const codeBox     = document.getElementById("codeBox");
+    const codeInput   = document.getElementById("codeInput");
+    const codeApply   = document.getElementById("codeApply");
+    const codeMsg     = document.getElementById("codeMsg");
+    const paywallClose= document.getElementById("paywallClose");
 
-    // Trial / paywall elements
-    const trialBadge = document.getElementById("trialBadge");
-    const trialLabel = document.getElementById("trialLabel");
-    const trialCount = document.getElementById("trialCount");
-    const trialWord = document.getElementById("trialWord");
-    const paywall = document.getElementById("paywall");
-    const buyBtn = document.getElementById("buyBtn");
-    const codeToggle = document.getElementById("codeToggle");
-    const codeBox = document.getElementById("codeBox");
-    const codeInput = document.getElementById("codeInput");
-    const codeApply = document.getElementById("codeApply");
-    const codeMsg = document.getElementById("codeMsg");
-    const paywallClose = document.getElementById("paywallClose");
-
-    /* ---------- Trial UI ---------- */
     function updateTrialUI() {
       if (isUnlocked()) {
         trialBadge.classList.add("unlocked");
         trialLabel.textContent = t("unlimited");
         trialCount.style.display = "none";
-        trialWord.style.display = "none";
+        trialWord.style.display  = "none";
         return;
       }
       trialBadge.classList.remove("unlocked");
       const left = triesLeft();
-      trialLabel.textContent = t("trialLabel");
+      trialLabel.textContent   = t("trialLabel");
       trialCount.style.display = "";
-      trialWord.style.display = "";
-      trialCount.textContent = left;
-      trialWord.textContent = left === 1 ? t("tryLeft") : t("triesLeft");
+      trialWord.style.display  = "";
+      trialCount.textContent   = left;
+      trialWord.textContent    = left === 1 ? t("tryLeft") : t("triesLeft");
     }
 
     function showPaywall() { paywall.classList.add("show"); }
     function hidePaywall() { paywall.classList.remove("show"); }
 
-    // Buy button → your payment link
     buyBtn.addEventListener("click", (e) => {
       e.preventDefault();
       window.location.href = PAYMENT_URL;
     });
 
-    // Access code UI — verifies the code against the SERVER (bypass-proof).
     codeToggle.addEventListener("click", () => codeBox.classList.toggle("show"));
     paywallClose.addEventListener("click", hidePaywall);
+
     codeApply.addEventListener("click", async () => {
       const code = (codeInput.value || "").trim().toUpperCase();
       codeMsg.className = "msg";
       if (!code) {
-        codeMsg.textContent = "Please enter your access code.";
-        codeMsg.className = "msg error";
+        codeMsg.textContent = t("codeEmpty");
+        codeMsg.className   = "msg error";
         return;
       }
-      codeMsg.textContent = "Checking...";
-      codeMsg.className = "msg";
-      // Verify by making a real (tiny) request with the code.
+      codeMsg.textContent = t("checking");
       try {
-        const res = await fetch(API_BASE + "/api/verify", {
-          method: "POST",
+        const res  = await fetch(API_BASE + "/api/verify", {
+          method:  "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ code }),
+          body:    JSON.stringify({ code }),
         });
         const data = await res.json();
         if (res.ok && data.valid) {
-          localStorage.setItem(LS_UNLOCKED, "1");
-          localStorage.setItem(LS_CODE, code);
-          codeMsg.textContent = "Success! Unlimited access unlocked.";
-          codeMsg.className = "msg success";
+          ACCOUNT.isPaid = true;
+          codeMsg.textContent = t("codeSuccess");
+          codeMsg.className   = "msg success";
           updateTrialUI();
           setTimeout(hidePaywall, 1200);
         } else {
-          codeMsg.textContent = data.error || "Invalid code. Please check and try again.";
-          codeMsg.className = "msg error";
+          codeMsg.textContent = data.error || t("codeInvalid");
+          codeMsg.className   = "msg error";
         }
       } catch {
-        codeMsg.textContent = "Could not verify code. Please try again.";
-        codeMsg.className = "msg error";
+        codeMsg.textContent = t("codeError");
+        codeMsg.className   = "msg error";
       }
     });
 
@@ -509,104 +464,79 @@
       document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
       btn.classList.add("active");
       currentMode = btn.dataset.mode;
-      const meta = MODE_META[currentMode];
-      inputTitle.textContent = meta.title;
-      inputHint.textContent = meta.hint;
-      contextField.style.display = meta.showContext ? "block" : "none";
+      inputTitle.textContent = t("titles")[currentMode];
+      inputHint.textContent  = t("hints")[currentMode];
     });
 
-    // Char counter
     inputText.addEventListener("input", () => {
       charCount.textContent = inputText.value.length;
     });
 
-    function showMsg(text, type) {
-      msg.textContent = text;
-      msg.className = "msg " + type;
-    }
-    function clearMsg() { msg.className = "msg"; msg.textContent = ""; }
+    function showMsg(text, type) { msg.textContent = text; msg.className = "msg " + type; }
+    function clearMsg()          { msg.className = "msg"; msg.textContent = ""; }
 
     async function optimize() {
       const text = inputText.value.trim();
       clearMsg();
-
-      // Gate: block if free trial is used up (server is the real authority)
-      if (!isUnlocked() && triesLeft() <= 0) {
-        showPaywall();
-        return;
-      }
-
+      if (!isUnlocked() && triesLeft() <= 0) { showPaywall(); return; }
       if (!AUTH_TOKEN) { window.location.href = "/login.html"; return; }
+      if (text.length < 5) { showMsg(t("needWords"), "error"); return; }
 
-      if (text.length < 5) {
-        showMsg("Please enter at least a few words.", "error");
-        return;
-      }
-
-      optimizeBtn.disabled = true;
-      optimizeBtn.innerHTML = '<span class="spinner"></span> Optimizing...';
-      output.innerHTML = '<span class="placeholder-txt">Thinking...</span>';
-      copyBtn.style.display = "none";
+      optimizeBtn.disabled  = true;
+      optimizeBtn.innerHTML = '<span class="spinner"></span> ' + t("optimizing");
+      output.innerHTML      = '<span class="placeholder-txt">' + t("thinking") + '</span>';
+      copyBtn.style.display     = "none";
       downloadBtn.style.display = "none";
 
       try {
         const res = await fetch(API_BASE + "/api/optimize", {
-          method: "POST",
+          method:  "POST",
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type":  "application/json",
             "Authorization": "Bearer " + AUTH_TOKEN,
           },
           body: JSON.stringify({
-            mode: currentMode,
-            text: text,
+            mode:    currentMode,
+            text:    text,
             context: contextText.value.trim() || undefined,
-            lang: LANG,
+            lang:    LANG,
           }),
         });
-
         const data = await res.json();
 
-        // Handle auth / limit responses from the server
         if (res.status === 401) { window.location.href = "/login.html"; return; }
         if (res.status === 402 || data.code === "LIMIT_REACHED") {
           if (typeof data.usesCount === "number") ACCOUNT.usesCount = data.usesCount;
-          if (typeof data.isPaid === "boolean") ACCOUNT.isPaid = data.isPaid;
+          if (typeof data.isPaid   === "boolean") ACCOUNT.isPaid    = data.isPaid;
           updateTrialUI();
           showPaywall();
           output.innerHTML = '<span class="placeholder-txt">' + t("resultPlaceholder") + '</span>';
           return;
         }
-        if (!res.ok) {
-          throw new Error(data.error || "Something went wrong.");
-        }
+        if (!res.ok) throw new Error(data.error || "Something went wrong.");
 
-        output.textContent = data.result || "(No result returned)";
-        copyBtn.style.display = "inline-flex";
+        output.textContent        = data.result || "(No result returned)";
+        copyBtn.style.display     = "inline-flex";
         downloadBtn.style.display = "inline-flex";
 
-        // Update account state from the SERVER response (source of truth)
         if (typeof data.usesCount === "number") ACCOUNT.usesCount = data.usesCount;
-        if (typeof data.isPaid === "boolean") ACCOUNT.isPaid = data.isPaid;
+        if (typeof data.isPaid   === "boolean") ACCOUNT.isPaid    = data.isPaid;
         updateTrialUI();
 
-        const left = triesLeft();
+        const left     = triesLeft();
         const leftNote = isUnlocked() ? "" : " (" + left + " free " + (left === 1 ? "try" : "tries") + " left)";
         showMsg(t("doneMsg") + leftNote, "success");
 
-        // NOTE: We do NOT show the paywall here. The user keeps their result.
-        // The paywall only appears when they try a 4th time and the server
-        // returns 402 (LIMIT_REACHED) — handled above, before any result.
       } catch (err) {
-        output.innerHTML = '<span class="placeholder-txt">Your optimized result will appear here...</span>';
+        output.innerHTML = '<span class="placeholder-txt">' + t("resultPlaceholder") + '</span>';
         showMsg(err.message || "Request failed.", "error");
       } finally {
-        optimizeBtn.disabled = false;
-        optimizeBtn.innerHTML = 'Optimize <span>→</span>';
+        optimizeBtn.disabled  = false;
+        optimizeBtn.innerHTML = t("optimize") + ' <span>→</span>';
       }
     }
 
-    // Language toggle buttons
-    document.querySelectorAll(".lang-btn").forEach((b) => {
+    document.querySelectorAll(".lang-btn").forEach(b => {
       b.addEventListener("click", () => setLanguage(b.dataset.lang));
     });
 
@@ -615,8 +545,8 @@
     copyBtn.addEventListener("click", async () => {
       try {
         await navigator.clipboard.writeText(output.textContent);
-        copyBtn.textContent = "Copied!";
-        setTimeout(() => (copyBtn.textContent = "Copy"), 1500);
+        copyBtn.textContent = t("copied");
+        setTimeout(() => (copyBtn.textContent = t("copy")), 1500);
       } catch {
         showMsg("Could not copy to clipboard.", "error");
       }
@@ -624,37 +554,37 @@
 
     downloadBtn.addEventListener("click", () => {
       const blob = new Blob([output.textContent], { type: "text/plain" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
+      const url  = URL.createObjectURL(blob);
+      const a    = document.createElement("a");
+      a.href     = url;
       a.download = currentMode + "-optimized.txt";
       a.click();
       URL.revokeObjectURL(url);
     });
 
-    // ---- Page startup: require login, then load account state ----
+    // ── Init ──────────────────────────────────────────────────────────────────
     async function init() {
-      const ok = await requireLogin();
-      if (!ok) return; // redirected to login
+      const ok = requireLogin();
+      if (!ok) return;
 
-      // Show the logged-in user's email + a logout button in the navbar
+      // Show email + logout button in navbar
       try {
-        const navRow = document.querySelector(".nav-inner > div");
+        const navRow = document.getElementById("navRight");
         if (navRow && CURRENT_USER) {
           const span = document.createElement("span");
-          span.style.cssText = "font-size:.8rem;color:var(--ink-500);font-weight:600;";
-          span.textContent = CURRENT_USER.email;
-          const out = document.createElement("button");
-          out.textContent = "Logout";
-          out.className = "lang-btn";
-          out.style.cssText = "border:2px solid var(--ink-900);border-radius:999px;";
-          out.addEventListener("click", doLogout);
+          span.style.cssText  = "font-size:.8rem;color:var(--ink-500);font-weight:600;";
+          span.textContent    = CURRENT_USER.email;
+          const logoutBtn     = document.createElement("button");
+          logoutBtn.textContent = "Logout";
+          logoutBtn.className   = "lang-btn";
+          logoutBtn.style.cssText = "border:2px solid var(--ink-900);border-radius:999px;";
+          logoutBtn.addEventListener("click", doLogout);
           navRow.insertBefore(span, navRow.firstChild);
-          navRow.appendChild(out);
+          navRow.appendChild(logoutBtn);
         }
       } catch (e) {}
 
-      // Load the account's trial/paid status from the database (via a lightweight call).
+      // Load trial/paid status from server
       try {
         const r = await fetch(API_BASE + "/api/me", {
           headers: { "Authorization": "Bearer " + AUTH_TOKEN },
@@ -662,7 +592,7 @@
         if (r.ok) {
           const me = await r.json();
           if (typeof me.usesCount === "number") ACCOUNT.usesCount = me.usesCount;
-          if (typeof me.isPaid === "boolean") ACCOUNT.isPaid = me.isPaid;
+          if (typeof me.isPaid   === "boolean") ACCOUNT.isPaid    = me.isPaid;
           ACCOUNT.loaded = true;
         }
       } catch (e) {}

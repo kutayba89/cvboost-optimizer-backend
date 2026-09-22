@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Log In — CVBoost</title>
+  <title>Log In – CVBoost</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     :root { --brand:#FFD200; --brand-600:#F5C400; --ink:#111; --muted:#6b6b6b; --border:#e5e5e5; --green:#16a34a; --red:#dc2626; --radius:8px; --radius-sm:6px; }
@@ -38,63 +38,78 @@
       <a href="/index.html" class="back">← Home</a>
     </div>
   </nav>
-
   <div class="wrap">
     <div class="card">
       <h1>Log In</h1>
-      <p class="sub">Welcome back — log in to continue.</p>
-
+      <p class="sub">Welcome back – log in to continue.</p>
       <label for="email">Email</label>
       <input type="email" id="email" placeholder="you@example.com" autocomplete="email">
-
       <label for="password">Password</label>
       <input type="password" id="password" placeholder="Your password" autocomplete="current-password">
-
-      <button class="btn" id="loginBtn">Log In &rarr;</button>
+      <button class="btn" id="loginBtn">Log In →</button>
       <div class="msg" id="msg"></div>
-
       <p class="alt">No account yet? <a href="/register.html">Sign up free</a></p>
     </div>
   </div>
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="/supabase-config.js"></script>
   <script>
-    const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
     const emailEl = document.getElementById("email");
-    const passEl = document.getElementById("password");
-    const btn = document.getElementById("loginBtn");
-    const msg = document.getElementById("msg");
+    const passEl  = document.getElementById("password");
+    const btn     = document.getElementById("loginBtn");
+    const msg     = document.getElementById("msg");
 
-    function showMsg(text, type) { msg.textContent = text; msg.className = "msg " + type; }
+    function showMsg(text, type) {
+      msg.textContent = text;
+      msg.className = "msg " + type;
+    }
 
-    // If already logged in, go straight to the app.
-    (async () => {
-      const { data } = await sb.auth.getSession();
-      if (data.session) window.location.href = "/app.html";
-    })();
+    // If already logged in redirect straight to app
+    const existing = localStorage.getItem("cvboost_token");
+    if (existing) window.location.href = "/app.html";
+
+    // Handle verified=true redirect from email verification link
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("verified") === "true") {
+      showMsg("Email verified! You can now log in.", "success");
+    }
 
     btn.addEventListener("click", async () => {
-      const email = emailEl.value.trim();
+      const email    = emailEl.value.trim();
       const password = passEl.value;
-      msg.className = "msg";
+      msg.className  = "msg";
 
-      if (!email || !password) { showMsg("Please enter your email and password.", "error"); return; }
+      if (!email || !password) {
+        showMsg("Please enter your email and password.", "error"); return;
+      }
 
-      btn.disabled = true; btn.textContent = "Logging in...";
+      btn.disabled    = true;
+      btn.textContent = "Logging in...";
+
       try {
-        const { data, error } = await sb.auth.signInWithPassword({ email, password });
-        if (error) {
-          showMsg(error.message, "error");
-          btn.disabled = false; btn.textContent = "Log In \u2192";
+        const res  = await fetch("/api/auth/login", {
+          method:  "POST",
+          headers: { "Content-Type": "application/json" },
+          body:    JSON.stringify({ email, password }),
+        });
+        const data = await res.json();
+
+        if (!res.ok) {
+          showMsg(data.error || "Login failed.", "error");
+          btn.disabled    = false;
+          btn.textContent = "Log In →";
           return;
         }
+
+        // Save JWT token to localStorage
+        localStorage.setItem("cvboost_token", data.token);
+        localStorage.setItem("cvboost_email", data.email);
+
         showMsg("Success! Redirecting...", "success");
-        setTimeout(() => (window.location.href = "/app.html"), 700);
+        setTimeout(() => window.location.href = "/app.html", 700);
+
       } catch (e) {
         showMsg("Something went wrong. Please try again.", "error");
-        btn.disabled = false; btn.textContent = "Log In \u2192";
+        btn.disabled    = false;
+        btn.textContent = "Log In →";
       }
     });
 
