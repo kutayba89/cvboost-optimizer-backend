@@ -1,6 +1,6 @@
 {
-  "name": "linkedin-optimizer-api",
-  "version": "1.0.0",
+  "name": "cvboost-optimizer-backend",
+  "version": "2.0.0",
   "type": "module",
   "scripts": {
     "dev": "node server.js",
@@ -8,6 +8,10 @@
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
-    "@supabase/supabase-js": "^2.115.0"
+    "@anthropic-ai/sdk": "^0.24.0",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.2",
+    "nodemailer": "^6.9.14",
+    "pg": "^8.12.0"
   }
 }
