@@ -7,11 +7,11 @@
     "start": "node server.js"
   },
   "dependencies": {
-    "@google/generative-ai": "^0.24.1",
     "@anthropic-ai/sdk": "^0.24.0",
+    "@google/generative-ai": "^0.24.1",
     "bcryptjs": "^2.4.3",
     "jsonwebtoken": "^9.0.2",
-    "nodemailer": "^6.9.14",
+    "nodemailer": "^10.0.10",
     "pg": "^8.12.0"
   }
 }
