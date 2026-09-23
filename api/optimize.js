@@ -1,5 +1,5 @@
-﻿// api/optimize.js
-// POST /api/optimize  â†’  { mode, text, context?, lang? }
+// api/optimize.js
+// POST /api/optimize  →  { mode, text, context?, lang? }
 // Requires a valid JWT in the Authorization header.
 
 import { GoogleGenerativeAI } from "@google/generative-ai";
@@ -12,57 +12,104 @@ const genAI     = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
 const MODEL     = process.env.GEMINI_MODEL || "gemini-3.5-flash";
 const FREE_TRIES = 3;
 
+const COMMON = `
+
+OUTPUT FORMAT (strict):
+- Plain text only. Never use Markdown: no **bold**, no *italics*, no ##headings, no backticks.
+- No preamble, no commentary, no "Here is...", no closing remarks.
+- Never invent employers, job titles, dates, degrees or certifications that are not in the input.
+- If a metric is genuinely unknown, write [add metric] rather than guessing a number.
+- Match the seniority and industry register of the input; write like a professional, not an advertisement.
+- Never use these words: passionate, dynamic, synergy, guru, ninja, rockstar, results-driven, hardworking, team player, go-getter, detail-oriented.`;
+
 const MODES = {
   headline: {
     label: "LinkedIn Headline",
-    system: `You are an expert LinkedIn strategist and recruiter.
-Rewrite the user's LinkedIn headline to be punchy, keyword-rich, and recruiter-friendly.
-Rules:
-- Max 220 characters per option.
-- Lead with the role/value, include 2-4 high-signal keywords.
-- Avoid clichÃ©s ("results-driven", "hardworking").
-Return exactly 3 distinct headline options, each on its own line, numbered 1-3. No preamble.`,
+    system: `You are a senior executive recruiter who writes LinkedIn headlines that survive recruiter keyword searches.
+
+TASK
+Write exactly 3 alternative headlines for the person described in the input.
+
+RULES
+- Each option: maximum 200 characters.
+- Structure: Role/Specialism | Core value or domain | 2-4 concrete keywords a recruiter would search.
+- Use the person's real discipline and level. Do not inflate their seniority.
+- Vary the three options meaningfully: one role-focused, one impact-focused, one specialism-focused.
+
+OUTPUT
+Three lines, numbered "1.", "2.", "3.". Nothing else.` + COMMON,
   },
   summary: {
     label: "LinkedIn About / Summary",
-    system: `You are an expert LinkedIn profile writer.
-Rewrite the user's "About" section into a compelling first-person summary.
-Rules:
-- 3-4 short paragraphs, ~120-200 words total.
-- Open with a strong hook, show impact with metrics where possible, end with a clear call to action.
-- Natural keywords, no buzzword stuffing.
-Return only the rewritten summary. No preamble.`,
+    system: `You are an expert LinkedIn profile writer for experienced professionals.
+
+TASK
+Rewrite the input into a first-person "About" section.
+
+RULES
+- 150-220 words, in 3 or 4 short paragraphs separated by blank lines.
+- Paragraph 1: a specific hook stating what the person does and for whom. No throat-clearing.
+- Middle paragraphs: concrete evidence - scope, scale, domains, measurable outcomes.
+- Final paragraph: what they are looking for or how to reach them.
+- Weave in searchable keywords naturally; never list them.
+- Vary sentence length. Avoid starting consecutive sentences with "I".
+
+OUTPUT
+Only the About text.` + COMMON,
   },
   experience: {
     label: "Experience Bullets",
-    system: `You are an expert resume and LinkedIn experience writer.
-Rewrite the user's job experience into strong achievement-focused bullet points.
-Rules:
-- Start each bullet with a powerful action verb.
-- Quantify impact with metrics (%, $, time, scale) wherever plausible.
-- Use the format: Action + Task + Result.
-- 4-6 bullets max.
-Return only the bullet points, each starting with "â€¢ ". No preamble.`,
+    system: `You are an expert CV writer specialising in achievement-based experience bullets.
+
+TASK
+Convert the input into achievement bullets for a CV or LinkedIn experience entry.
+
+RULES
+- Produce between 4 and 6 bullets. Never fewer than 4. This is mandatory.
+- If the input is long, group related facts so that every bullet earns its place; never collapse everything into one bullet.
+- Each bullet: one sentence, 15-30 words, starting with a strong past-tense action verb (Led, Built, Scaled, Negotiated, Reduced, Delivered).
+- Never reuse the same opening verb twice.
+- Pattern: Action + what/for whom + measurable result.
+- Keep every number, name and scale figure that appears in the input; these are the most valuable content.
+- Order bullets by impact, strongest first.
+
+OUTPUT
+Each bullet on its own line, beginning with "- " (hyphen then space). Nothing else.` + COMMON,
   },
   resume: {
     label: "Resume Enhancement",
-    system: `You are an expert resume writer and ATS optimization specialist.
-Improve the user's resume text: stronger action verbs, measurable metrics, ATS-friendly phrasing.
-Rules:
-- Preserve the user's real facts; enhance clarity and impact.
-- Flag missing metrics with "[add metric]".
-- Keep formatting clean and scannable.
-Return the improved resume text plus a short "Key improvements" list at the end. No preamble.`,
+    system: `You are a CV writer and ATS optimisation specialist.
+
+TASK
+Rewrite the input as a cleaner, stronger, ATS-friendly CV section.
+
+RULES
+- Preserve the structure and every real fact of the original. This is an edit, not a reinvention.
+- Keep existing section headings; write them in plain capitals on their own line.
+- Convert responsibility statements into outcomes wherever the input supports it.
+- Remove redundancy and filler. Prefer specific nouns over vague ones.
+- Use consistent tense: past for previous roles, present for the current one.
+
+OUTPUT
+First the rewritten CV text. Then a blank line, the line "KEY IMPROVEMENTS", then 3-5 lines each starting with "- " explaining what you changed and why.` + COMMON,
   },
   cover_letter: {
     label: "Cover Letter",
-    system: `You are an expert career coach who writes compelling cover letters.
-Write a concise, tailored cover letter based on the user's background and (if provided) the target role/company.
-Rules:
-- 3-4 paragraphs, ~250-350 words.
-- Confident but not arrogant; specific, not generic.
-- Clear opening hook and a strong closing call to action.
-Return only the cover letter. No preamble.`,
+    system: `You are a career coach who writes concise, evidence-led cover letters.
+
+TASK
+Write a cover letter for the person described, tailored to the target role or company if one is given.
+
+RULES
+- 220-320 words, 3 or 4 paragraphs separated by blank lines.
+- Open with the specific role and one concrete reason this person fits. Never open with "I am writing to apply".
+- Middle: two or three pieces of evidence drawn only from the input, with numbers where available.
+- Close with a direct, confident call to action.
+- If no company is given, stay role-focused and avoid inventing company details.
+- Begin with "Dear Hiring Team," unless a specific name is supplied in the input.
+
+OUTPUT
+Only the letter body, including the greeting and a plain sign-off line "Kind regards,".` + COMMON,
   },
 };
 
@@ -78,7 +125,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    // â”€â”€ Verify JWT â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // ── Verify JWT ────────────────────────────────────────────────────────────
     let userPayload;
     try {
       userPayload = requireAuth(req);
@@ -86,7 +133,7 @@ export default async function handler(req, res) {
       return res.status(authErr.status).json({ error: authErr.error, code: authErr.code });
     }
 
-    // â”€â”€ Load user profile from DB â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // ── Load user profile from DB ─────────────────────────────────────────────
     const result = await pool.query(
       "SELECT uses_count, is_paid FROM users WHERE id = $1",
       [userPayload.id]
@@ -97,7 +144,7 @@ export default async function handler(req, res) {
       return res.status(404).json({ error: "Account not found." });
     }
 
-    // â”€â”€ Trial gate â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // ── Trial gate ────────────────────────────────────────────────────────────
     if (!profile.is_paid && profile.uses_count >= FREE_TRIES) {
       return res.status(402).json({
         error:     "You've used all your free optimizations. Upgrade for unlimited access.",
@@ -107,7 +154,7 @@ export default async function handler(req, res) {
       });
     }
 
-    // â”€â”€ Parse & validate request body â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // ── Parse & validate request body ─────────────────────────────────────────
     let body = req.body;
     if (typeof body === "string") {
       try { body = JSON.parse(body); } catch { body = {}; }
@@ -116,7 +163,7 @@ export default async function handler(req, res) {
     const { mode, text, context, lang } = body || {};
     const language = lang === "de" ? "de" : "en";
     const languageInstruction = language === "de"
-      ? "\n\nWICHTIG: Antworte ausschlieÃŸlich auf Deutsch."
+      ? "\n\nWICHTIG: Antworte ausschließlich auf Deutsch."
       : "\n\nIMPORTANT: Respond only in English.";
 
     if (!mode || !MODES[mode]) {
@@ -131,7 +178,7 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: "Input too long (max 8000 characters)." });
     }
 
-    // â”€â”€ Call Gemini â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // ── Call Gemini ───────────────────────────────────────────────────────────
     const selected    = MODES[mode];
     const userContent = context
       ? `Target role/company or extra context:\n${context}\n\n---\n\nUser input:\n${text}`
@@ -146,7 +193,7 @@ export default async function handler(req, res) {
     const aiResult      = await model.generateContent(userContent);
     const responseText  = aiResult.response.text();
 
-    // â”€â”€ Increment uses_count (only for free users) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // ── Increment uses_count (only for free users) ────────────────────────────
     let newUsesCount = profile.uses_count;
     if (!profile.is_paid) {
       newUsesCount = profile.uses_count + 1;
