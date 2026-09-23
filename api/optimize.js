@@ -1,5 +1,5 @@
-// api/optimize.js
-// POST /api/optimize  →  { mode, text, context?, lang? }
+﻿// api/optimize.js
+// POST /api/optimize  â†’  { mode, text, context?, lang? }
 // Requires a valid JWT in the Authorization header.
 
 import { GoogleGenerativeAI } from "@google/generative-ai";
@@ -7,7 +7,9 @@ import { pool } from "../db/client.js";
 import { requireAuth } from "../middleware/auth.js";
 
 const genAI     = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
-const MODEL     = "gemini-1.5-flash";
+// Model name is configurable, because Google retires model IDs periodically.
+// Override with the GEMINI_MODEL env var if this one is ever deprecated.
+const MODEL     = process.env.GEMINI_MODEL || "gemini-3.5-flash";
 const FREE_TRIES = 3;
 
 const MODES = {
@@ -18,7 +20,7 @@ Rewrite the user's LinkedIn headline to be punchy, keyword-rich, and recruiter-f
 Rules:
 - Max 220 characters per option.
 - Lead with the role/value, include 2-4 high-signal keywords.
-- Avoid clichés ("results-driven", "hardworking").
+- Avoid clichÃ©s ("results-driven", "hardworking").
 Return exactly 3 distinct headline options, each on its own line, numbered 1-3. No preamble.`,
   },
   summary: {
@@ -40,7 +42,7 @@ Rules:
 - Quantify impact with metrics (%, $, time, scale) wherever plausible.
 - Use the format: Action + Task + Result.
 - 4-6 bullets max.
-Return only the bullet points, each starting with "• ". No preamble.`,
+Return only the bullet points, each starting with "â€¢ ". No preamble.`,
   },
   resume: {
     label: "Resume Enhancement",
@@ -76,7 +78,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    // ── Verify JWT ────────────────────────────────────────────────────────────
+    // â”€â”€ Verify JWT â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     let userPayload;
     try {
       userPayload = requireAuth(req);
@@ -84,7 +86,7 @@ export default async function handler(req, res) {
       return res.status(authErr.status).json({ error: authErr.error, code: authErr.code });
     }
 
-    // ── Load user profile from DB ─────────────────────────────────────────────
+    // â”€â”€ Load user profile from DB â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     const result = await pool.query(
       "SELECT uses_count, is_paid FROM users WHERE id = $1",
       [userPayload.id]
@@ -95,7 +97,7 @@ export default async function handler(req, res) {
       return res.status(404).json({ error: "Account not found." });
     }
 
-    // ── Trial gate ────────────────────────────────────────────────────────────
+    // â”€â”€ Trial gate â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     if (!profile.is_paid && profile.uses_count >= FREE_TRIES) {
       return res.status(402).json({
         error:     "You've used all your free optimizations. Upgrade for unlimited access.",
@@ -105,7 +107,7 @@ export default async function handler(req, res) {
       });
     }
 
-    // ── Parse & validate request body ─────────────────────────────────────────
+    // â”€â”€ Parse & validate request body â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     let body = req.body;
     if (typeof body === "string") {
       try { body = JSON.parse(body); } catch { body = {}; }
@@ -114,7 +116,7 @@ export default async function handler(req, res) {
     const { mode, text, context, lang } = body || {};
     const language = lang === "de" ? "de" : "en";
     const languageInstruction = language === "de"
-      ? "\n\nWICHTIG: Antworte ausschließlich auf Deutsch."
+      ? "\n\nWICHTIG: Antworte ausschlieÃŸlich auf Deutsch."
       : "\n\nIMPORTANT: Respond only in English.";
 
     if (!mode || !MODES[mode]) {
@@ -129,7 +131,7 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: "Input too long (max 8000 characters)." });
     }
 
-    // ── Call Gemini ───────────────────────────────────────────────────────────
+    // â”€â”€ Call Gemini â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     const selected    = MODES[mode];
     const userContent = context
       ? `Target role/company or extra context:\n${context}\n\n---\n\nUser input:\n${text}`
@@ -144,7 +146,7 @@ export default async function handler(req, res) {
     const aiResult      = await model.generateContent(userContent);
     const responseText  = aiResult.response.text();
 
-    // ── Increment uses_count (only for free users) ────────────────────────────
+    // â”€â”€ Increment uses_count (only for free users) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     let newUsesCount = profile.uses_count;
     if (!profile.is_paid) {
       newUsesCount = profile.uses_count + 1;
