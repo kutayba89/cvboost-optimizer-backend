@@ -81,17 +81,24 @@ Each bullet on its own line, beginning with "- " (hyphen then space). Nothing el
     system: `You are a CV writer and ATS optimisation specialist.
 
 TASK
-Rewrite the input as a cleaner, stronger, ATS-friendly CV section.
+Rewrite the user's own resume text so it is sharper, more specific and ATS-friendly.
+
+CRITICAL
+- This is an EDIT of the text you are given, not a new document. Rewrite it line by line.
+- Cover the WHOLE input from beginning to end. Do not summarise it and do not stop early.
+- Never introduce section headings that are not in the input. In particular, never output a heading such as ABOUT, PROFILE or SUMMARY unless that exact heading appears in the input.
+- If the input has no headings at all, return improved prose or bullets in the same shape as the input.
+- Keep the original order of information.
 
 RULES
-- Preserve the structure and every real fact of the original. This is an edit, not a reinvention.
-- Keep existing section headings; write them in plain capitals on their own line.
-- Convert responsibility statements into outcomes wherever the input supports it.
-- Remove redundancy and filler. Prefer specific nouns over vague ones.
-- Use consistent tense: past for previous roles, present for the current one.
+- Preserve every real fact, name, number, employer, title and date. Change wording, never substance.
+- Turn duty statements into outcomes where the input supports it.
+- Cut filler and repetition; prefer concrete nouns and strong verbs.
+- Consistent tense: past for previous roles, present for the current one.
+- Write third person without pronouns if the input does, otherwise keep the input voice.
 
 OUTPUT
-First the rewritten CV text. Then a blank line, the line "KEY IMPROVEMENTS", then 3-5 lines each starting with "- " explaining what you changed and why.` + COMMON,
+First the full rewritten resume text. Then a blank line, the single line KEY IMPROVEMENTS, then 3-5 lines each starting with "- " naming what you changed.` + COMMON,
   },
   cover_letter: {
     label: "Cover Letter",
@@ -184,14 +191,42 @@ export default async function handler(req, res) {
       ? `Target role/company or extra context:\n${context}\n\n---\n\nUser input:\n${text}`
       : `User input:\n${text}`;
 
+    // Output budget.
+    //
+    // "resume" has to reproduce the whole input plus a KEY IMPROVEMENTS list,
+    // so it needs far more room than e.g. a headline. Roughly 1 token ~ 4 chars,
+    // so we allow the input length plus generous headroom, and never less than
+    // a sensible floor. Reasoning models also spend tokens on internal thinking,
+    // which counts against this same budget.
+    const inputTokens   = Math.ceil((text.length + (context ? context.length : 0)) / 4);
+    const EXPANSIVE     = mode === "resume";
+    const floorTokens   = EXPANSIVE ? 4000 : 2000;
+    const maxOutputTokens = Math.min(
+      8192,
+      Math.max(floorTokens, Math.ceil(inputTokens * (EXPANSIVE ? 3 : 2)))
+    );
+
     const model = genAI.getGenerativeModel({
       model: MODEL,
       systemInstruction: selected.system + languageInstruction,
-      generationConfig: { maxOutputTokens: 1500, temperature: 0.7 },
+      generationConfig: { maxOutputTokens, temperature: 0.7 },
     });
 
     const aiResult      = await model.generateContent(userContent);
     const responseText  = aiResult.response.text();
+
+    // If the model ran out of room the text stops mid-sentence. Tell the user
+    // rather than handing them a half-finished document.
+    const finishReason = aiResult.response?.candidates?.[0]?.finishReason;
+    if (finishReason === "MAX_TOKENS") {
+      console.warn("/api/optimize truncated: mode=" + mode + " budget=" + maxOutputTokens);
+      if (!responseText || responseText.trim().length < 40) {
+        return res.status(502).json({
+          error: "The AI response was cut off before it produced anything usable. Please try a shorter section of text.",
+          code:  "TRUNCATED",
+        });
+      }
+    }
 
     // ── Increment uses_count (only for free users) ────────────────────────────
     let newUsesCount = profile.uses_count;
@@ -209,6 +244,7 @@ export default async function handler(req, res) {
       mode,
       label:     selected.label,
       result:    responseText,
+      truncated: finishReason === "MAX_TOKENS",
       usesCount: newUsesCount,
       isPaid:    profile.is_paid,
       triesLeft,
