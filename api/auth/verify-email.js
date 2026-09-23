@@ -3,10 +3,12 @@
 // Activates the user's account when they click the link in their email.
 
 import { pool } from "../../db/client.js";
-
-const APP_URL = process.env.APP_URL || "https://cvboost-optimizer-backend.vercel.app";
+import { getBaseUrl } from "../../lib/base-url.js";
 
 export default async function handler(req, res) {
+  // Resolve the real public origin for parsing and redirects.
+  const APP_URL = getBaseUrl(req);
+
   if (req.method === "OPTIONS") return res.status(200).end();
   if (req.method !== "GET") return res.status(405).json({ error: "Method not allowed" });
 

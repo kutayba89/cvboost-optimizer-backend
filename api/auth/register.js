@@ -5,10 +5,10 @@ import bcrypt from "bcryptjs";
 import crypto from "node:crypto";
 import nodemailer from "nodemailer";
 import { pool } from "../../db/client.js";
+import { getBaseUrl } from "../../lib/base-url.js";
 
 const BCRYPT_ROUNDS = 12;
 const TOKEN_TTL_HOURS = 24;
-const APP_URL = process.env.APP_URL || "https://cvboost-optimizer-backend.vercel.app";
 
 function createTransporter() {
   return nodemailer.createTransport({
@@ -22,8 +22,8 @@ function createTransporter() {
   });
 }
 
-async function sendVerificationEmail(email, token) {
-  const verifyUrl = `${APP_URL}/api/auth/verify-email?token=${token}`;
+async function sendVerificationEmail(email, token, baseUrl) {
+  const verifyUrl = `${baseUrl}/api/auth/verify-email?token=${token}`;
 
   const transporter = createTransporter();
   await transporter.sendMail({
@@ -35,11 +35,15 @@ async function sendVerificationEmail(email, token) {
         <h2>Welcome to CVBoost! 🚀</h2>
         <p>Click the button below to verify your email address.</p>
         <p>This link expires in <strong>${TOKEN_TTL_HOURS} hours</strong>.</p>
-        <a href="${verifyUrl}"
+                <a href="${verifyUrl}"
            style="display:inline-block;padding:12px 24px;background:#4f46e5;
                   color:#fff;border-radius:6px;text-decoration:none;font-weight:bold">
           Verify Email
         </a>
+        <p style="margin-top:20px;color:#666;font-size:12px">
+          Or copy this link into your browser:<br>
+          <a href="${verifyUrl}" style="color:#4f46e5;word-break:break-all">${verifyUrl}</a>
+        </p>
         <p style="margin-top:24px;color:#888;font-size:12px">
           If you didn't create an account, you can safely ignore this email.
         </p>
@@ -96,8 +100,10 @@ export default async function handler(req, res) {
       [email, passwordHash, verifyToken, verifyTokenExp]
     );
 
-    // ── Send verification email ───────────────────────────────────────────────
-    await sendVerificationEmail(email, verifyToken);
+        // ── Send verification email ───────────────────────────────────────────────
+    // Build the link from the host the user actually registered on, so it can
+    // never point at a stale deployment URL.
+    await sendVerificationEmail(email, verifyToken, getBaseUrl(req));
 
     return res.status(201).json({
       message: "Account created! Please check your email to verify your account.",

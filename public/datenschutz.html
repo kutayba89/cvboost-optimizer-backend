@@ -77,22 +77,38 @@
       <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google Datenschutzerklärung</a>.
     </p>
 
-    <h2>5. Benutzerkonten (Registrierung &amp; Login über Supabase)</h2>
+    <h2>5. Benutzerkonten (Registrierung &amp; Login)</h2>
     <p>
       Um das Tool zu nutzen, ist eine Registrierung mit E-Mail-Adresse und Passwort erforderlich.
-      Zur Verwaltung der Konten, der Authentifizierung (Login) und zur Speicherung des Nutzungsstands
-      setzen wir den Dienst <strong>Supabase</strong> ein.
+      Die Konten werden in einer <strong>PostgreSQL-Datenbank auf unserem eigenen Server</strong>
+      (Oracle Cloud Infrastructure, Region <span class="fill">[Region, z. B. eu-frankfurt-1]</span>) gespeichert.
+      Die Authentifizierung erfolgt über ein selbst ausgestelltes Sitzungstoken (JWT).
     </p>
     <ul>
-      <li><strong>Gespeicherte Daten:</strong> E-Mail-Adresse, ein sicher gehashtes (verschlüsseltes) Passwort, Zeitpunkt der Registrierung, Anzahl der genutzten Optimierungen (Testkontingent) sowie der Bezahlstatus.</li>
+      <li><strong>Gespeicherte Daten:</strong> E-Mail-Adresse, ein sicher gehashtes Passwort (bcrypt), Verifizierungsstatus, Zeitpunkt der Registrierung, Anzahl der genutzten Optimierungen (Testkontingent) sowie der Bezahlstatus.</li>
       <li><strong>Zweck:</strong> Bereitstellung des Kontos, Login, Verwaltung des kostenlosen Testkontingents und des kostenpflichtigen Zugangs.</li>
       <li><strong>Rechtsgrundlage:</strong> Art. 6 Abs. 1 lit. b DSGVO (Erfüllung des Nutzungsvertrags).</li>
-      <li><strong>Passwörter:</strong> Passwörter werden ausschließlich in gehashter Form gespeichert und sind für uns nicht im Klartext einsehbar.</li>
-      <li><strong>Auftragsverarbeiter:</strong> Supabase Inc. Eine Verarbeitung in Drittländern (z. B. USA) kann je nach gewählter Region erfolgen.</li>
+      <li><strong>Passwörter:</strong> Passwörter werden ausschließlich gehasht (bcrypt) gespeichert und sind für uns nicht im Klartext einsehbar.</li>
+      <li><strong>Auftragsverarbeiter (Infrastruktur):</strong> Oracle Corporation bzw. Oracle Deutschland B.V. &amp; Co. KG als Betreiber des Rechenzentrums. Weitere Informationen: <a href="https://www.oracle.com/legal/privacy/" target="_blank" rel="noopener">Oracle Privacy Policy</a>.</li>
     </ul>
     <p>
-      Weitere Informationen: <a href="https://supabase.com/privacy" target="_blank" rel="noopener">Supabase Privacy Policy</a>.
       Sie können die Löschung Ihres Kontos jederzeit per E-Mail an <span class="fill">[deine@email.de]</span> verlangen.
+    </p>
+
+    <h2>5a. Versand von E-Mails (Brevo)</h2>
+    <p>
+      Zur Bestätigung Ihrer Registrierung senden wir Ihnen eine E-Mail mit einem Verifizierungslink.
+      Für den Versand nutzen wir den Dienst <strong>Brevo</strong> (Sendinblue SAS).
+    </p>
+    <ul>
+      <li><strong>Verarbeitete Daten:</strong> Ihre E-Mail-Adresse sowie technische Versanddaten.</li>
+      <li><strong>Zweck:</strong> Zustellung der Bestätigungs-E-Mail (Double-Opt-In) und kontobezogener Systemnachrichten.</li>
+      <li><strong>Rechtsgrundlage:</strong> Art. 6 Abs. 1 lit. b DSGVO (Erfüllung des Nutzungsvertrags).</li>
+      <li><strong>Gültigkeit:</strong> Der Verifizierungslink verliert nach 24 Stunden seine Gültigkeit.</li>
+      <li><strong>Auftragsverarbeiter:</strong> Sendinblue SAS (Brevo), 106 boulevard Haussmann, 75008 Paris, Frankreich.</li>
+    </ul>
+    <p>
+      Weitere Informationen: <a href="https://www.brevo.com/legal/privacypolicy/" target="_blank" rel="noopener">Brevo Privacy Policy</a>.
     </p>
 
     <h2>6. Lokale Speicherung im Browser (localStorage)</h2>
